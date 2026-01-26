@@ -1,0 +1,165 @@
+.pasteshield-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2147483647;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  backdrop-filter: blur(2px);
+}
+
+.pasteshield-modal {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 480px;
+  width: 90%;
+  padding: 0;
+  animation: pasteshield-slide-in 0.2s ease-out;
+}
+
+@keyframes pasteshield-slide-in {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.pasteshield-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 24px 16px 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.pasteshield-icon {
+  width: 28px;
+  height: 28px;
+  color: #f59e0b;
+  flex-shrink: 0;
+}
+
+.pasteshield-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+  line-height: 1.3;
+}
+
+.pasteshield-content {
+  padding: 20px 24px;
+}
+
+.pasteshield-content p {
+  margin: 0 0 12px 0;
+  color: #374151;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.pasteshield-detected-list {
+  margin: 12px 0;
+  padding-left: 24px;
+  color: #dc2626;
+  font-weight: 500;
+}
+
+.pasteshield-detected-list li {
+  margin: 6px 0;
+  font-size: 14px;
+}
+
+.pasteshield-question {
+  margin-top: 16px !important;
+  font-weight: 500;
+  color: #111827;
+}
+
+.pasteshield-actions {
+  display: flex;
+  gap: 10px;
+  padding: 16px 24px 24px 24px;
+  justify-content: flex-end;
+}
+
+.pasteshield-btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.pasteshield-btn-primary {
+  background: #2563eb;
+  color: white;
+}
+
+.pasteshield-btn-primary:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.pasteshield-btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.pasteshield-btn-secondary:hover {
+  background: #e5e7eb;
+  transform: translateY(-1px);
+}
+
+.pasteshield-btn:active {
+  transform: translateY(0);
+}
+
+@media (prefers-color-scheme: dark) {
+  .pasteshield-modal {
+    background: #1f2937;
+  }
+
+  .pasteshield-header {
+    border-bottom-color: #374151;
+  }
+
+  .pasteshield-header h2 {
+    color: #f9fafb;
+  }
+
+  .pasteshield-content p {
+    color: #d1d5db;
+  }
+
+  .pasteshield-question {
+    color: #f9fafb;
+  }
+
+  .pasteshield-detected-list {
+    color: #f87171;
+  }
+
+  .pasteshield-btn-secondary {
+    background: #374151;
+    color: #d1d5db;
+  }
+
+  .pasteshield-btn-secondary:hover {
+    background: #4b5563;
+  }
+}

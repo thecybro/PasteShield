@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PasteShield</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>PasteShield</h1>
+    </div>
+
+    <div class="status">
+      <div class="status-indicator">
+        <div class="status-dot"></div>
+        <span>Protection Active</span>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <h2>What are Protected:</h2>
+      <ul class="protection-list">
+        <li>
+          Passwords
+        </li>
+        <li>
+          API Keys & Tokens
+        </li>
+        <li>
+          Email Addresses
+        </li>
+        <li>
+          Phone Numbers
+        </li>
+      </ul>
+    </div>
+
+    <div class="trusted-section">
+      <div class="trusted-header">
+        <h2>Trusted Sites</h2>
+        <span id="trusted-count" class="badge">0</span>
+      </div>
+      <div id="trusted-list" class="trusted-list">
+        <p class="empty-state">No trusted sites yet</p>
+      </div>
+      <button id="clear-btn" class="btn btn-danger" disabled>Clear Trusted Sites</button>
+    </div>
+
+    <div class="footer">
+      <p>No data leaves your browser</p>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
