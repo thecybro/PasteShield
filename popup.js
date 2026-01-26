@@ -21,6 +21,7 @@ function displayTrustedSites(sites) {
 
     if (sites.length === 0) {
         trustedList.innerHTML = '<p class="empty-state">No trusted sites yet</p>';
+        console.log("No trusted sites yet");
         clearBtn.disabled = true;
     } else {
         trustedList.innerHTML = '';

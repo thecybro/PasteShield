@@ -18,32 +18,32 @@ So this extension just **pauses the paste**, warns you, and lets *you* decide.
 ## Repository Structure
 
 ```
-PasteShield/
-├── manifest.json 
-├── background.js 
-├── content.js    
-├── modal.css     
-├── popup.html    
-├── popup.css     
-├── popup.js      
-├── icons/        
+PasteShield
+├── background.js
+├── content.js
+├── icons
+│   ├── icon128.png
 │   ├── icon16.png
-│   ├── icon48.png
-│   └── icon128.png
-├── ICONS_GUIDE.md
-└── README.md     
+│   └── icon48.png
+├── manifest.json
+├── modal.css
+├── popup.css
+├── popup.html
+├── popup.js
+├── README.md
+└── test.js    
 ```
 
 ## What it does
 
-When you paste text on any website, PasteShield checks if it looks like:
+When you paste text on any website, *PasteShield* checks if it looks like:
 
 - **Password** - 8+ characters with uppercase, lowercase, and numbers
 - **API key / token** - Common patterns like `sk-...`, `ghp_...`, `AIza...`, AWS keys, etc.
 - **Email address** - Standard email format like `user@example.com`
 - **Phone number** - 10-15 digits (with or without formatting)
 
-If nothing risky is found, PasteShield will let you do your job.
+If nothing risky is found, *PasteShield* will let you do your job.
 
 If something sensitive is detected, it stops the paste and shows a warning.
 
@@ -67,7 +67,7 @@ Yep, That's it.
 If you choose **Trust site**, that website is saved locally in your browser.
 
 To manage trusted sites:
-1. Click the PasteShield extension icon
+1. Click the *PasteShield* extension icon
 2. View all trusted sites in the list
 3. Remove individual sites or click **Clear Trusted Sites** to reset all
 
@@ -75,7 +75,7 @@ Now all sites will warn again.
 
 ## Installation (Chrome)
 
-Unfortunately, I can't oublish it in Chrome Store yet :(
+Unfortunately, I can't publish it in Chrome Store yet :(
 
 ### Step-by-step:
 
@@ -104,7 +104,7 @@ Everything runs **locally** inside your browser. The extension only uses Chrome'
 - Some websites with strict paste policies may still block programmatic paste
 - Large multi-line pastes might not be detected properly (focused on single-line sensitive data)
 
-This is v0.1, not magic.
+This is v0.1, not magic, so you won't see anything advanced here..
 
 ## Who this is for
 
@@ -125,7 +125,7 @@ No permissions are used to send data externally.
 - More granular controls
 - Firefox support.
 
-But honestly, it does what I need it to do right now.
+But honestly, it does what it needs to do right now.
 
 ## Version
 

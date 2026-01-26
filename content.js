@@ -27,22 +27,24 @@ function detectSensitiveData(text) {
   // To detected passwords i.e. 8+ chars with uppercase, lowercase, and numbers
   const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
   if (passwordPattern.test(text.trim())) {
-    detections.push('Password');
+    console.log('Warning: Password detected!');
+    detections.push('Warning: Password detected!');
   }
 
   // To detect API key / token patterns
   const apiKeyPatterns = [
-    /sk-[a-zA-Z0-9]{32,}/, 
-    /ghp_[a-zA-Z0-9]{36,}/, 
-    /gho_[a-zA-Z0-9]{36,}/, 
-    /AIza[0-9A-Za-z\\-_]{35}/, 
-    /AKIA[0-9A-Z]{16}/, 
-    /[a-zA-Z0-9_-]{32,}/, 
+    /sk-[a-zA-Z0-9]{32,}/,
+    /ghp_[a-zA-Z0-9]{36,}/,
+    /gho_[a-zA-Z0-9]{36,}/,
+    /AIza[0-9A-Za-z\\-_]{35}/,
+    /AKIA[0-9A-Z]{16}/,
+    /[a-zA-Z0-9_-]{32,}/,
   ];
 
   for (let pattern of apiKeyPatterns) {
     if (pattern.test(text)) {
-      detections.push('API Key / Token');
+      detections.push('Warning: API Key / Token detected!');
+      console.log('Warning: API Key / Token detected!');
       break;
     }
   }
@@ -50,14 +52,16 @@ function detectSensitiveData(text) {
   // To detect emails
   const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   if (emailPattern.test(text.trim())) {
-    detections.push('Email Address');
+    detections.push('Warning: Email Address detected!');
+    console.log('Warning: Email Address detected!');
   }
 
   // // To detect phone numbers i.e. 10-15 digits
   const phonePattern = /^[\d\s\-\(\)\+]{10,15}$/;
   const digitsOnly = text.replace(/[\s\-\(\)\+]/g, '');
   if (phonePattern.test(text.trim()) && digitsOnly.length >= 10 && digitsOnly.length <= 15) {
-    detections.push('Phone Number');
+    detections.push('Warning: Phone Number detected!');
+    console.log('Warning: Phone Number detected!');
   }
 
   return detections;
@@ -75,7 +79,7 @@ function showWarningModal(detectedTypes, pasteText) {
 
   const detectedList = detectedTypes.map(type => `<li>${type}</li>`).join('');
 
-  // To create HTML structure for warning (it looks cool tho)
+  // To create HTML structure for warning (cuz it looks cool)
   modal.innerHTML = `
     <div class="pasteshield-modal">
       <div class="pasteshield-header">
