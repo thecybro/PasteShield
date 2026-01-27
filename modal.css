@@ -11,6 +11,7 @@
   z-index: 2147483647;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   backdrop-filter: blur(2px);
+  outline: none;
 }
 
 .pasteshield-modal {
@@ -28,6 +29,7 @@
     transform: translateY(-20px);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -86,6 +88,13 @@
   color: #111827;
 }
 
+.pasteshield-hint {
+  margin-top: 12px !important;
+  font-size: 13px !important;
+  color: #6b7280 !important;
+  font-weight: 400 !important;
+}
+
 .pasteshield-actions {
   display: flex;
   gap: 10px;
@@ -102,6 +111,18 @@
   cursor: pointer;
   transition: all 0.15s ease;
   font-family: inherit;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pasteshield-shortcut {
+  font-size: 11px;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+  opacity: 0.7;
 }
 
 .pasteshield-btn-primary {
@@ -113,6 +134,10 @@
   background: #1d4ed8;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.pasteshield-btn-primary .pasteshield-shortcut {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .pasteshield-btn-secondary {
@@ -129,6 +154,7 @@
   transform: translateY(0);
 }
 
+/* For dark mode */
 @media (prefers-color-scheme: dark) {
   .pasteshield-modal {
     background: #1f2937;
@@ -150,6 +176,10 @@
     color: #f9fafb;
   }
 
+  .pasteshield-hint {
+    color: #9ca3af !important;
+  }
+
   .pasteshield-detected-list {
     color: #f87171;
   }
@@ -161,5 +191,9 @@
 
   .pasteshield-btn-secondary:hover {
     background: #4b5563;
+  }
+
+  .pasteshield-shortcut {
+    background: rgba(255, 255, 255, 0.1);
   }
 }

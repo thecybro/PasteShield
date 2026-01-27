@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PasteShield</title>
   <link rel="stylesheet" href="popup.css">
 </head>
+
 <body>
   <div class="container">
     <div class="header">
+      <svg class="logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+      </svg>
       <h1>PasteShield</h1>
+      <span class="version">v0.1.0</span>
     </div>
 
     <div class="status">
@@ -20,18 +27,30 @@
     </div>
 
     <div class="info-section">
-      <h2>What are Protected:</h2>
+      <h2>What's Protected</h2>
       <ul class="protection-list">
         <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
           Passwords
         </li>
         <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
           API Keys & Tokens
         </li>
         <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
           Email Addresses
         </li>
         <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
           Phone Numbers
         </li>
       </ul>
@@ -55,4 +74,5 @@
 
   <script src="popup.js"></script>
 </body>
+
 </html>
