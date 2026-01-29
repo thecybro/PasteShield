@@ -30,8 +30,18 @@ PasteShield
 ├── popup.css
 ├── popup.html
 ├── popup.js
+├── Previews
+│   ├── PasteShield Preview 1.png
+│   ├── PasteShield Preview 2.png
+│   ├── PasteShield Preview 3.png
+│   ├── PasteShield Preview 4.png
+│   ├── PasteShield Preview 5.png
+│   ├── PasteShield Preview 6.png
+│   └── PasteShield Preview 7.png
 ├── README.md
-└── test.js    
+├── test.js
+└── TestResults.md
+   
 ```
 
 ## What it does
@@ -40,6 +50,7 @@ When you paste text on any website, *PasteShield* checks if it looks like:
 
 - **Password** - 8+ characters with uppercase, lowercase, and numbers
 - **API key / token** - Common patterns like `sk-...`, `ghp_...`, `AIza...`, AWS keys, etc.
+- **Credit Card** - The most common pattern, which consists of a 16-digit Primary Account Number (PAN), organized in groups of four, structured according to ISO/IEC 7812 standards. 
 - **Email address** - Standard email format like `user@example.com`
 - **Phone number** - 10-15 digits (with or without formatting)
 
@@ -60,6 +71,7 @@ You'll see a small popup with 3 options:
 - **Cancel**  
   Don't paste anything.
 
+**You can also select options from shortcut keysshowed in the popup.**
 Yep, That's it.
 
 ## Trusted sites
@@ -104,7 +116,7 @@ Everything runs **locally** inside your browser. The extension only uses Chrome'
 - Some websites with strict paste policies may still block programmatic paste
 - Large multi-line pastes might not be detected properly (focused on single-line sensitive data)
 
-This is v0.1, not magic, so you won't see anything advanced here..
+If there's demand, this version will be updated and more features will be added.
 
 ## Who this is for
 
