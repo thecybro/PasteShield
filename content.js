@@ -27,10 +27,9 @@ function detectSensitiveData(text) {
   const detections = [];
 
   // To detected passwords i.e. 8+ chars with uppercase, lowercase, and numbers
-  const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+  const passwordPattern = /(?=\S*[a-z])(?=\S*[A-Z])(?=\S*\d)\S{8,}/;
   if (passwordPattern.test(text.trim())) {
-    detections.push({ type: 'Password', severity: 'high', icon: '🔐' });
-    console.log('Warning: Password detected!');
+    detections.push({ type: 'Password', severity: 'highest', icon: '🔐' });
   }
 
   // To detect API key / token patterns
@@ -45,8 +44,7 @@ function detectSensitiveData(text) {
 
   for (let pattern of apiKeyPatterns) {
     if (pattern.test(text)) {
-      detections.push({ type: 'API Key / Token', severity: 'high', icon: '🔑' });
-      console.log('Warning: API Key / Token detected!');
+      detections.push({ type: 'API Key / Token', severity: 'highest', icon: '🔑' });
       break;
     }
   }
@@ -65,26 +63,23 @@ function detectSensitiveData(text) {
 
   for (let pattern of cards) {
     if (pattern.test(text)) {
-      detections.push({ type: 'Credit Card', severity: 'veryhigh', icon: '💳' })
-      console.log("Warning: Credit Card detected!")
+      detections.push({ type: 'Credit Card', severity: 'highest', icon: '💳' })
       break;
     }
   }
 
   // To detect emails
-  const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const emailPattern = /\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b/g;
   if (emailPattern.test(text.trim())) {
-    detections.push({ type: 'Email Address', severity: 'medium', icon: '📧' });
-    console.log('Warning: Email Address detected!');
+    detections.push({ type: 'Email Address', severity: 'low', icon: '📧' });
 
   }
 
   // // To detect phone numbers i.e. 10-15 digits
-  const phonePattern = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;
+  const phonePattern = /^(?:\+\d{1,3}[-. ]?)?\(?\d{3,5}?\)?[-. ]?\d{1,5}[-. ]?\d{1,9}$/;
   const digitsOnly = text.replace(/[\s\-\(\)\+]/g, '');
   if (phonePattern.test(text.trim()) && digitsOnly.length >= 10 && digitsOnly.length <= 15) {
     detections.push({ type: 'Phone Number', severity: 'medium', icon: '📱' });
-    console.log('Warning: Phone Number detected!');
   }
 
   return detections;
@@ -93,10 +88,9 @@ function detectSensitiveData(text) {
 //  To get severity color (added to make popup more visually appealing)
 function getSeverityColor(severity) {
   const colors = {
-    veryhigh: '#f70202',
-    high: '#cd2424',
-    medium: '#f59e0b',
-    low: '#10b981'
+    highest: '#f70202',
+    medium: '#ffae00',
+    low: '#4ae654'
   };
   return colors[severity] || colors.medium;
 }
@@ -138,8 +132,8 @@ function showWarningModal(detections, pasteText) {
 
   // Get highest severity for border color
   const highestSeverity = detections.some(d => d.severity === 'veryhigh') ? 'veryhigh' :
-                          detections.some(d => d.severity === 'high') ? 'high' :
-                          detections.some(d => d.severity === 'medium') ? 'medium' : 'low';
+    detections.some(d => d.severity === 'high') ? 'high' :
+      detections.some(d => d.severity === 'medium') ? 'medium' : 'low';
 
   const detectedList = detections.map(d =>
     `<li style="color: ${getSeverityColor(d.severity)}">

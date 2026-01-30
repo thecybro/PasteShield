@@ -2,7 +2,7 @@
 
 PasteShield is a small Chrome extension I built to stop myself from doing something stupid — like pasting passwords or API keys into random websites by mistake.
 
-That's it.
+**Checkout** *[Test Results](https://github.com/thecybro/PasteShield/blob/main/TestResults.md)* ***for more information.***
 
 ## Motive behind making this
 
@@ -30,18 +30,8 @@ PasteShield
 ├── popup.css
 ├── popup.html
 ├── popup.js
-├── Previews
-│   ├── PasteShield Preview 1.png
-│   ├── PasteShield Preview 2.png
-│   ├── PasteShield Preview 3.png
-│   ├── PasteShield Preview 4.png
-│   ├── PasteShield Preview 5.png
-│   ├── PasteShield Preview 6.png
-│   └── PasteShield Preview 7.png
 ├── README.md
-├── test.js
 └── TestResults.md
-   
 ```
 
 ## What it does
@@ -71,8 +61,8 @@ You'll see a small popup with 3 options:
 - **Cancel**  
   Don't paste anything.
 
-**You can also select options from shortcut keysshowed in the popup.**
-Yep, That's it.
+**You can also select options from shortcut keys showed in the popup.**
+That's it.
 
 ## Trusted sites
 
@@ -87,16 +77,16 @@ Now all sites will warn again.
 
 ## Installation (Chrome)
 
-Unfortunately, I can't publish it in Chrome Store yet :(
+Will be available in chrome store soon.
 
-### Step-by-step:
+<!-- ### Step-by-step:
 
 1. Download or clone this repository
 2. Open Chrome and go to: `chrome://extensions/`
 3. Turn on **Developer mode** (In top right corner)
 4. Click **Load unpacked**
 5. Select the `PasteShield` folder
-6. Done!
+6. Done! -->
 
 ## Privacy 
 
@@ -116,8 +106,6 @@ Everything runs **locally** inside your browser. The extension only uses Chrome'
 - Some websites with strict paste policies may still block programmatic paste
 - Large multi-line pastes might not be detected properly (focused on single-line sensitive data)
 
-If there's demand, this version will be updated and more features will be added.
-
 ## Who this is for
 
 - Developers who work with API keys
@@ -129,7 +117,7 @@ If there's demand, this version will be updated and more features will be added.
 
 No permissions are used to send data externally.
 
-## Future ideas (maybe)
+<!-- ## Future ideas (maybe)
 
 - Custom detection patterns
 - Whitelist for specific text patterns
@@ -137,13 +125,13 @@ No permissions are used to send data externally.
 - More granular controls
 - Firefox support.
 
-But honestly, it does what it needs to do right now.
+But honestly, it does what it needs to do right now. -->
 
 ## Version
 
 **v0.1.0** - January 2026
 
-Built because I needed it.  
+Built because I needed to.  
 If it saves you once, it did its job.
 
 ---

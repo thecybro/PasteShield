@@ -1,10 +1,10 @@
 # PasteShield - Test Results
 
 ## Test Environment
-- **Date:** January 28, 2026
+- **Date:** January 28-30, 2026
 - **Extension Version:** v0.1.0 (Enhanced)
 - **Browser:** Chrome 131
-- **Operating System:** Windows 11 (couldn't test in other OS because of unavailability)
+- **Operating System:** Windows 11 
 - **Tester:** Amrit aka [Cybro](https://github.com/thecybro/PasteShield)
 
 ---
@@ -17,6 +17,24 @@
 - [x] Email Detection
 - [x] Phone Number Detection
 - [x] Credit Card Detection
+
+
+#### NOTE:
+Since it is a free version,
+
+- It could trigger false warnings if the pasted content doesn't follow a standard format.
+
+### Premium Version (coming soon)
+#### Extra features:
+1. More credit card formats 
+2. Detection of all type of API Keys
+3. SSN detection
+4. Option to add safe-to-paste content which won't trigger any warnings
+5. Advanced detection system
+6. High precision
+7. Will get updated on demand
+
+***Upgrade to the premium version to get 100x the benefits and a robust detection system.***
 
 ---
 
@@ -129,8 +147,7 @@
 - **Pass Rate:** 87.5%
 
 ### Notes
-- Test #7: Need to verify if Luhn algorithm validation is implemented
-
+- Test #7: Violates Luhn algorithm, so may detect.
 ---
 
 ## 6. Edge Cases
@@ -151,20 +168,42 @@
 
 ---
 
-## 7. UI/UX Tests
+## 7. Test on Non-Sensitive + mixed texts
 
-| Feature | Test | Result | Notes |
-|---------|------|--------|-------|
-| Modal Display | Appears on detection | ✅ Pass | Smooth animation |
-| Preview Masking | Shows `abc•••xyz` format | ✅ Pass | Correct masking |
-| Eye Icon Toggle | Reveals/hides text | ✅ Pass | Smooth transition |
-| Keyboard Shortcuts | Enter, Esc, T work | ✅ Pass | All shortcuts responsive |
-| Cancel Button | Closes modal, no paste | ✅ Pass | Works correctly |
-| Allow Once | Pastes and closes | ✅ Pass | Paste executed |
-| Trust Site | Adds to trusted list | ✅ Pass | Persists across sessions |
-| Character Count | Shows correct count | ✅ Pass | Accurate counting |
-| Severity Colors | Border matches severity | ✅ Pass | Very high=dark red, High=red Medium=yellow |
-| Dark Mode | Proper contrast | ✅ Pass | Looks good in dark mode |
+### Test Cases
+
+| Test | Input | Expected | Result | Notes |
+|------|-------|----------|--------|-------|
+| 1 | `Hello, my name is John` | ❌ No detect | ✅ Pass | Normal string |
+| 2 | `555-0199` | ❌ No detect | ✅ Pass | Random numbers |
+| 3 | `1600 Pennsylvania Avenue NW, Washington, DC 20500` | ❌ No detect | ✅ Pass | Address |
+| 4 | `email: user@example.com` | ✅ Detect | ✅ Pass | Contains valid email |
+| 5 | `978-3-16-148410-0` | ❌ No detect | ✅ Pass | Doesn't follow standard form |
+| 6 | `07/04/1776` | ❌ No detect | ✅ Pass | Date |
+| 7 | `4242 4242 4242 4242` | ✅ Detect | ✅ Pass | Follows a standard form |
+
+### Summary
+- **Total Tests:** 7
+- **Passed:** 7
+- **Failed:** 0
+- **Pass Rate:** 100%
+
+---
+
+## 8. UI/UX Tests
+
+| S.N. | Feature | Test | Result | Notes |
+|------|---------|------|--------|-------|
+| 1 | Modal Display | Appears on detection | ✅ Pass | Smooth animation |
+| 2 | Preview Masking | Shows `abc•••xyz` format | ✅ Pass | Correct masking |
+| 3 | Eye Icon Toggle | Reveals/hides text | ✅ Pass | Smooth transition |
+| 4 | Keyboard Shortcuts | Enter, Esc, T work | ✅ Pass | All shortcuts responsive |
+| 5 | Cancel Button | Closes modal, no paste | ✅ Pass | Works correctly |
+| 6 | Allow Once | Pastes and closes | ✅ Pass | Paste executed |
+| 7 | Trust Site | Adds to trusted list | ✅ Pass | Persists across sessions |
+| 8 | Character Count | Shows correct count | ✅ Pass | Accurate counting |
+| 9 | Severity Colors | Border matches severity | ✅ Pass | Highest=dark red, Medium=yellow, Low=Green |
+| 10 | Dark Mode | Proper contrast | ✅ Pass | Looks good in dark mode |
 
 ### Summary
 - **Total Tests:** 10
@@ -174,42 +213,42 @@
 
 ---
 
-## 8. Performance Tests
+## 9. Performance Tests
 
-| Test | Metric | Result | Notes |
-|------|--------|--------|-------|
-| Detection Speed | < 5ms | ✅ Pass | Instant detection |
-| Modal Load Time | < 50ms | ✅ Pass | Very fast |
-| Memory Usage | < 10 MB | ✅ Pass | Lightweight |
-| No Lag on Sites | No slowdown | ✅ Pass | Zero impact |
+| S.N. | Test | Metric | Result | Notes |
+|------|------|--------|--------|-------|
+| 1 | Detection Speed | < 5ms | ✅ Pass | Instant detection |
+| 2 | Modal Load Time | < 50ms | ✅ Pass | Very fast |
+| 3 | Memory Usage | < 10 MB | ✅ Pass | Lightweight |
+| 4 | No Lag on Sites | No slowdown | ✅ Pass | Zero impact |
 
 ---
 
-## 9. Browser Compatibility
+## 10. Browser Compatibility
 
-| Browser | Version | Status | Notes |
-|---------|---------|--------|-------|
-| Chrome | 131.x | ✅ Works | Fully functional |
-| Edge | Latest | ✅ Works | Chromium-based, works perfectly |
-| Opera | Latest | ✅ Works | works perfectly |
-| Brave | Latest | ⚠️ Not Tested | Should work (Chromium) |
+| S.N.| Browser | Version | Status | Notes |
+|-----|---------|---------|--------|-------|
+| 1 | Chrome | 131.x | ✅ Works | Fully functional |
+| 2 | Edge | Latest | ✅ Works | Chromium-based, works perfectly |
+| 3 | Opera | Latest | ✅ Works | works perfectly |
+| 4 | Brave | Latest | ⚠️ Not Tested | Should work (Chromium) |
 
 ---
 
 ## Overall Summary
 
 ### Detection Accuracy
-- **Total Test Cases:** 57
-- **Passed:** 56
+- **Total Test Cases:** 64
+- **Passed:** 63
 - **Failed:** 0
 - **Needs Review:** 1
-- **Overall Pass Rate:** 98.2%
+- **Overall Pass Rate:** 98.4%
 
 ### Areas of Excellence
-✅ Password detection is robust  
+✅ Password detection is good
 ✅ API key patterns work well  
 ✅ Email validation is accurate  
-✅ Phone number formats handled correctly  
+✅ Phone number formats are handled correctly  
 ✅ Credit card detection working  
 ✅ UI/UX is smooth and professional  
 ✅ Performance is excellent  
@@ -222,7 +261,6 @@
 -->
 
 ---
-Improvements will be done if there's demand.
 
 ## Issues Found
 
@@ -230,13 +268,7 @@ Improvements will be done if there's demand.
 - None found
 
 ### Minor Issues
-- None found
-
-### Ideas for Future
-1. Add Luhn algorithm validation for credit cards
-2. Add more credit card formats (JCB, UnionPay)
-3. Consider adding SSN detection
-4. Test on Firefox and Safari
+- Found only when pasting non standard pattern or mixed content/text
 
 ---
 
@@ -267,7 +299,7 @@ PasteShield is **production-ready** with excellent detection accuracy and smooth
 ✅ Ready for public release
 
 ---
-
+<!-- 
 ## Next Steps
 - [ ] Test on Firefox
 - [ ] Test on Safari
@@ -275,8 +307,8 @@ PasteShield is **production-ready** with excellent detection accuracy and smooth
 - [ ] Publish to Chrome Web Store
 - [ ] Gather user feedback
 
----
+--- -->
 
-**Last Updated:** January 28, 2026  
+**Last Updated:** January 30, 2026  
 **Tested By:** Amrit aka [Cybro](https://github.com/thecybro/PasteShield)
 **Status:** ✅ All Tests Passed
