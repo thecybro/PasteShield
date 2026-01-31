@@ -2,6 +2,8 @@
 
 PasteShield is a small Chrome extension I built to stop myself from doing something stupid — like pasting passwords or API keys into random websites by mistake.
 
+It works entirely **locally** and simply pauses the paste, warns you, and lets *you* decide what to do.
+
 **Checkout** *[Test Results](https://github.com/thecybro/PasteShield/blob/main/TestResults.md)* ***for more information.***
 
 ## Motive behind making this
@@ -11,12 +13,11 @@ I've accidentally pasted:
 - API keys into Google searches  
 - emails and phone numbers into random forms  
 
-And it caused a lot of trouble for me.
+And it caused real trouble for me.
 
 So this extension just **pauses the paste**, warns you, and lets *you* decide.
 
 ## Repository Structure
-
 ```
 PasteShield
 ├── background.js
@@ -34,17 +35,18 @@ PasteShield
 └── TestResults.md
 ```
 
+
 ## What it does
 
 When you paste text on any website, *PasteShield* checks if it looks like:
 
-- **Password** - 8+ characters with uppercase, lowercase, and numbers
-- **API key / token** - Common patterns like `sk-...`, `ghp_...`, `AIza...`, AWS keys, etc.
-- **Credit Card** - The most common pattern, which consists of a 16-digit Primary Account Number (PAN), organized in groups of four, structured according to ISO/IEC 7812 standards. 
-- **Email address** - Standard email format like `user@example.com`
-- **Phone number** - 10-15 digits (with or without formatting)
+- **Password** – 8+ characters with uppercase, lowercase, and numbers  
+- **API key / token** – Common patterns like `sk-...`, `ghp_...`, `AIza...`, AWS keys, etc.  
+- **Credit card** – A common 16-digit Primary Account Number (PAN), based on ISO/IEC 7812 patterns  
+- **Email address** – Standard format like `user@example.com`  
+- **Phone number** – 10–15 digits (with or without formatting)
 
-If nothing risky is found, *PasteShield* will let you do your job.
+If nothing risky is found, *PasteShield* lets the paste go through normally.
 
 If something sensitive is detected, it stops the paste and shows a warning.
 
@@ -56,13 +58,13 @@ You'll see a small popup with 3 options:
   Paste it this time only.
   
 - **Trust site**  
-  Paste it and don't warn me again on this website.
+  Paste it and don’t warn me again on this website.
   
 - **Cancel**  
-  Don't paste anything.
+  Don’t paste anything.
 
-**You can also select options from shortcut keys showed in the popup.**
-That's it.
+**You can also select options using the shortcut keys shown in the popup.**  
+That’s it.
 
 ## Trusted sites
 
@@ -73,22 +75,23 @@ To manage trusted sites:
 2. View all trusted sites in the list
 3. Remove individual sites or click **Clear Trusted Sites** to reset all
 
-Now all sites will warn again.
+After clearing, all sites will warn again.
 
 ## Installation (Chrome)
 
-Will be available in chrome store soon.
+Will be available on the Chrome Web Store soon.
 
-<!-- ### Step-by-step:
+<!--
+### Manual installation (for now):
 
 1. Download or clone this repository
 2. Open Chrome and go to: `chrome://extensions/`
-3. Turn on **Developer mode** (In top right corner)
+3. Turn on **Developer mode** (top right)
 4. Click **Load unpacked**
 5. Select the `PasteShield` folder
-6. Done! -->
+-->
 
-## Privacy 
+## Privacy
 
 - **No data is sent anywhere**
 - **No servers**
@@ -96,50 +99,41 @@ Will be available in chrome store soon.
 - **No tracking**
 - **Clipboard text is never saved**
 
-Everything runs **locally** inside your browser. The extension only uses Chrome's local storage to remember which sites you've trusted.
+Everything runs **locally** inside your browser. The extension only uses Chrome’s local storage to remember which sites you’ve trusted.
 
-## Limitations 
+## Limitations
 
-- Detection is pattern-based, not perfect
-- You might get some false positives (like strong unique usernames triggering the password check)
+- Detection is pattern-based and not perfect
+- You may get false positives (e.g., strong unique strings triggering the password check)
 - UI is very basic but functional
 - Some websites with strict paste policies may still block programmatic paste
-- Large multi-line pastes might not be detected properly (focused on single-line sensitive data)
+- Large multi-line pastes may not be detected reliably (focus is on single-line sensitive data)
 
 ## Who this is for
 
 - Developers who work with API keys
 - Students copying credentials
-- Anyone who copy-pastes sensitive stuff regularly
+- Anyone who copy-pastes sensitive data regularly
 - People who mess up sometimes (me)
 
-## Technical Details
+## Technical details
 
+All detection is done locally using pattern matching.  
 No permissions are used to send data externally.
-
-<!-- ## Future ideas (maybe)
-
-- Custom detection patterns
-- Whitelist for specific text patterns
-- Better false positive handling
-- More granular controls
-- Firefox support.
-
-But honestly, it does what it needs to do right now. -->
 
 ## Version
 
-**v0.1.0** - January 2026
+**v0.1.0** – January 2026
 
-Built because I needed to.  
+Built because I needed it.  
 If it saves you once, it did its job.
 
 ---
 
 ## License
 
-MIT License - Do whatever you want with it.
+MIT License – Do whatever you want with it.
 
 ---
 
-**Note:** This extension is a personal project and not affiliated with any company. Use at your own risk, though there's really nothing risky about it since it only runs locally.
+**Note:** This is a personal project and not affiliated with any company. Use at your own risk, though the extension only runs locally and does not transmit any data.
