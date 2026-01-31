@@ -6,6 +6,11 @@ It works entirely **locally** and simply pauses the paste, warns you, and lets *
 
 **Checkout** *[Test Results](https://github.com/thecybro/PasteShield/blob/main/TestResults.md)* ***for more information.***
 
+## Status
+
+*PasteShield* is not yet published on the Chrome Web Store.
+This repository contains the full source for local testing via *Developer Mode.*
+
 ## Motive behind making this
 
 I've accidentally pasted:
