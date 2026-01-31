@@ -55,6 +55,13 @@ If nothing risky is found, *PasteShield* lets the paste go through normally.
 
 If something sensitive is detected, it stops the paste and shows a warning.
 
+## Previews
+![Paste Warning](PasteShield/Previews/03_Warning.png)
+![Popup](PasteShield/Previews/01_popup.png)
+![Trusted Sites](PasteShield/Previews/02_Trusted_sites.png)
+![Normal Paste Initial](PasteShield/Previews/04_Normal_paste.png)
+![Normal Paste After](PasteShield/Previews/05_Normal_paste.png)
+
 ## What happens when it warns you
 
 You'll see a small popup with 3 options:
