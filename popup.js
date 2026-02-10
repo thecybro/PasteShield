@@ -1,5 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     loadTrustedSites();
+    loadStats(); // To Load the counter
+
+    loadProtectionSettings();
+    setupToggleListeners();
 
     // Clear button event listener
     document.getElementById('clear-btn').addEventListener('click', clearTrustedSites);
@@ -11,6 +15,32 @@ function loadTrustedSites() {
         displayTrustedSites(sites);
     });
 }
+
+// Function which will load the counter value from background.js & display it in popup.html
+function loadStats() {
+    chrome.runtime.sendMessage({ action: 'getStats' }, (response) => {
+        if (response) {
+            const countElement = document.getElementById('paste-count');
+            countElement.textContent = response.pasteCount || 0;
+        }
+    });
+}
+
+// To look out for updates in the counter value and update the badge accordingly in rt
+chrome.storage.onChanged.addListener((changes, area) => {
+    if (area === 'local' && changes.pasteCount) {
+        const countElement = document.getElementById('paste-count');
+        const newCount = changes.pasteCount.newValue || 0;
+
+        // For a little animation while the number changes
+        countElement.classList.add('updated');
+        countElement.textContent = newCount;
+
+        setTimeout(() => {
+            countElement.classList.remove('updated');
+        }, 300);
+    }
+});
 
 function displayTrustedSites(sites) {
     const trustedList = document.getElementById('trusted-list');
@@ -72,3 +102,51 @@ function clearTrustedSites() {
         });
     }
 }
+
+// For loading the protection Settings
+function loadProtectionSettings(){
+    chrome.storage.local.get(['protectionSettings'], (result) => {
+        const settings = result.protectionSettings || {
+            passwords: true,
+            creditCards: true,
+            apiKeys: true,
+            emails: true,
+            phoneNumbers: true,
+            customKeywords: []
+        };
+
+        document.getElementById('toggle-passwords').checked = settings.passwords;
+        document.getElementById('toggle-apiKeys').checked = settings.apiKeys;
+        document.getElementById('toggle-emails').checked = settings.emails;
+        document.getElementById('toggle-phoneNumbers').checked = settings.phoneNumbers;
+        document.getElementById('toggle-creditCards').checked = settings.creditCards;
+    });
+}
+
+//Now to save all our protection Settings
+function saveProtectionSettings() {
+    const settings = {
+        passwords: document.getElementById('toggle-passwords').checked,
+        apiKeys: document.getElementById('toggle-apiKeys').checked,
+        emails: document.getElementById('toggle-emails').checked,
+        phoneNumbers: document.getElementById('toggle-phoneNumbers').checked,
+        creditCards: document.getElementById('toggle-creditCards').checked
+    };
+
+    chrome.storage.local.set({ protectionSettings: settings }, () => {
+        console.log("Protection settings saved:", settings);
+    });
+}
+
+function setupToggleListeners() {
+    const toggles = ['passwords', 'apiKeys', 'emails', 'phoneNumbers', 'creditCards'];
+
+    toggles.forEach(type => {
+        const checkbox = document.getElementById(`toggle-${type}`);
+
+        if (checkbox) {
+            checkbox.addEventListener('change', saveProtectionSettings);
+        }
+    });
+}
+

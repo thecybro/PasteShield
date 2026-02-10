@@ -26,34 +26,66 @@
       </div>
     </div>
 
-    <div class="info-section">
-      <h2>What's Protected</h2>
-      <ul class="protection-list">
-        <li>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
-          Passwords
-        </li>
-        <li>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
-          API Keys & Tokens
-        </li>
-        <li>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
-          Email Addresses
-        </li>
-        <li>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
-          Phone Numbers
-        </li>
-      </ul>
+    <div class="stats-section">
+      <div class="stat-card">
+        <div class="stat-icon">🛡️</div>
+        <div class="stat-info">
+          <div class="stat-number" id="paste-count">0</div>
+          <div class="stat-label">Blocked Today</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h2>Protection Settings</h2>
+      <p class="settings-hint">Choose what to protect</p>
+
+      <div class="toggle-list">
+        <label class="toggle-item">
+          <div class="toggle-info">
+            <span class="toggle-icon">🔑</span>
+            <span class="toggle-label">Passwords</span>
+          </div>
+          <input type="checkbox" id="toggle-passwords" class="toggle-checkbox">
+          <span class="toggle-switch"></span>
+        </label>
+
+        <label class="toggle-item">
+          <div class="toggle-info">
+            <span class="toggle-icon">🔐</span>
+            <span class="toggle-label">API Keys & Tokens</span>
+          </div>
+          <input type="checkbox" id="toggle-apiKeys" class="toggle-checkbox">
+          <span class="toggle-switch"></span>
+        </label>
+
+        <label class="toggle-item">
+          <div class="toggle-info">
+            <span class="toggle-icon">📧</span>
+            <span class="toggle-label">Email Addresses</span>
+          </div>
+          <input type="checkbox" id="toggle-emails" class="toggle-checkbox">
+          <span class="toggle-switch"></span>
+        </label>
+
+        <label class="toggle-item">
+          <div class="toggle-info">
+            <span class="toggle-icon">📱</span>
+            <span class="toggle-label">Phone Numbers</span>
+          </div>
+          <input type="checkbox" id="toggle-phoneNumbers" class="toggle-checkbox">
+          <span class="toggle-switch"></span>
+        </label>
+
+        <label class="toggle-item">
+          <div class="toggle-info">
+            <span class="toggle-icon">💳</span>
+            <span class="toggle-label">Credit Cards</span>
+          </div>
+          <input type="checkbox" id="toggle-creditCards" class="toggle-checkbox">
+          <span class="toggle-switch"></span>
+        </label>
+      </div>
     </div>
 
     <div class="trusted-section">

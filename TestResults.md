@@ -136,18 +136,15 @@ Since it is a free version,
 | 4 | `6011111111111117` | ✅ Detect | ✅ Pass | Valid Discover |
 | 5 | `4532-0151-1283-0366` | ✅ Detect | ✅ Pass | Visa with dashes |
 | 6 | `4532 0151 1283 0366` | ✅ Detect | ✅ Pass | Visa with spaces |
-| 7 | `1234567890123456` | ❌ No detect | ⚠️ Check | Invalid (fails Luhn), but may detect |
+| 7 | `1234567890123456` | ❌ No detect | ✅ Pass | Invalid (fails Luhn) |
 | 8 | `123` | ❌ No detect | ✅ Pass | Too short |
 
 ### Summary
 - **Total Tests:** 8
-- **Passed:** 7
+- **Passed:** 8
 - **Failed:** 0
-- **Needs Review:** 1
-- **Pass Rate:** 87.5%
+- **Pass Rate:** 100%
 
-### Notes
-- Test #7: Violates Luhn algorithm, so may detect.
 ---
 
 ## 6. Edge Cases
@@ -239,10 +236,9 @@ Since it is a free version,
 
 ### Detection Accuracy
 - **Total Test Cases:** 64
-- **Passed:** 63
+- **Passed:** 64
 - **Failed:** 0
-- **Needs Review:** 1
-- **Overall Pass Rate:** 98.4%
+- **Overall Pass Rate:** 100%
 
 ### Areas of Excellence
 ✅ Password detection is good

@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "PasteShield",
   "version": "0.1.0",
-  "description": "Protects you from accidentally pasting sensitive information like passwords, API keys, emails, and phone numbers into websites.",
+  "description": "Protects you from accidentally pasting sensitive information like passwords, API keys, Credit Cards, emails, and phone numbers into websites.",
   "permissions": [
     "storage",
     "activeTab"
@@ -19,7 +19,7 @@
         "<all_urls>"
       ],
       "js": [
-        "content.js"
+        "content/content.js"
       ],
       "css": [
         "modal.css"

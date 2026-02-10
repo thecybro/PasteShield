@@ -36,7 +36,14 @@ PasteShield
 ├── popup.css
 ├── popup.html
 ├── popup.js
+├── Previews
+│   ├── 01_popup.png
+│   ├── 02_Trusted_sites.png
+│   ├── 03_Warning.png
+│   ├── 04_Normal_paste.png
+│   └── 05_Normal_paste.png
 ├── README.md
+├── store.md
 └── TestResults.md
 ```
 
