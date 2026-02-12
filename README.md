@@ -65,15 +65,27 @@ If something sensitive is detected, it stops the paste and shows a warning.
 
 ## Previews
 
-<img src="https://github.com/thecybro/PasteShield/blob/main/Previews/01_popup.png" alt="PasteShield Popup" width="50%" height="auto">
+<p align="center">
 
-<img src="https://github.com/thecybro/PasteShield/blob/main/Previews/02_Trusted_sites.png" alt="PasteShield Popup-Trusted sites" width="50%" height="auto">
+<img src="https://github.com/thecybro/PasteShield/blob/main/Previews/01_popup.png" alt="PasteShield Popup" width="45%" height="auto">
+
+<img src="https://github.com/thecybro/PasteShield/blob/main/Previews/02_Trusted_sites.png" alt="PasteShield Popup-Trusted sites" width="45%" height="auto">
+
+</p>
+
+<p align="center">
 
 <img src="https://github.com/thecybro/PasteShield/blob/main/Previews/03_Warning.png" alt="PasteShield Warning" width="50%" height="auto">
+
+</p>
+
+<p align="center">
 
 <img src="https://github.com/thecybro/PasteShield/blob/main/Previews/04_Normal_paste.png" alt="PasteShield Normal Paste: before" width="50%" height="auto">
 
 <img src="https://github.com/thecybro/PasteShield/blob/main/Previews/05_Normal_paste.png" alt="PasteShield Normal Paste: after" width="50%" height="auto">
+
+</p>
 
 ## What happens when it warns you
 
