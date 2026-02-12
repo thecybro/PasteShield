@@ -176,6 +176,7 @@ body {
 }
 
 .settings-section h2 {
+    font-family: "Arial";
     font-size: 14px;
     font-weight: 600;
     color: #374151;
@@ -291,7 +292,7 @@ body {
     }
 
     .settings-hint {
-        color: #6b7280;
+        color: #b2b8c3;
     }
 
     .toggle-item {
@@ -320,7 +321,8 @@ body {
 }
 
 .trusted-section {
-    background: rgb(255, 255, 255);
+    background: #1f2937;
+    border-color: #374151;
     padding: 16px;
     border-radius: 10px;
     margin-bottom: 16px;
@@ -338,7 +340,7 @@ body {
     font-size: 14px;
     font-weight: 600;
     font-family: sans-serif;
-    color: #374151;
+    color: #ffffff;
 }
 
 .badge {

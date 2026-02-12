@@ -310,21 +310,21 @@ function showWarningModal(detections, pasteText) {
       <div class="pasteshield-actions">
         <button id="pasteshield-cancel" class="pasteshield-btn pasteshield-btn-secondary">
           <span>Cancel</span>
-          <span class="pasteshield-shortcut">Esc</span>
+          <span class="pasteshield-shortcut">Esc or<br>C</span>
         </button>
         <button id="pasteshield-trust" class="pasteshield-btn pasteshield-btn-secondary">
           <svg class="pasteshield-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
           </svg>
           <span>Trust Site</span>
-          <span class="pasteshield-shortcut">T</span>
+          <span class="pasteshield-shortcut">Ctrl or<br>T</span>
         </button>
         <button id="pasteshield-allow" class="pasteshield-btn pasteshield-btn-primary">
           <svg class="pasteshield-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polyline points="20 6 9 17 4 12"></polyline>
           </svg>
           <span>Allow Once</span>
-          <span class="pasteshield-shortcut">Enter</span>
+          <span class="pasteshield-shortcut">Enter or<br>A</span>
         </button>
       </div>
       
@@ -385,7 +385,7 @@ function showWarningModal(detections, pasteText) {
             allowOnce();
 
         // - T to trust site
-        } else if (key === 't') {
+        } else if (key=== 'control' || key === 't') {
             e.preventDefault();
             e.stopPropagation();
             trustSite();
@@ -450,7 +450,7 @@ function showWarningModal(detections, pasteText) {
 }
 
 // For contenteditable (HTML element), we can use document.execCommand to insert text at the cursor position, which ensures that the paste behaves as expected in rich text editors and other contenteditable areas.
-function executePaste() {
+function executePaste() { 
     if (!pendingPasteData || !pendingPasteEvent) return;
 
     const target = pendingPasteEvent.target;
@@ -490,26 +490,57 @@ document.addEventListener('paste', (e) => {
     }
 
     const detections = detectSensitiveData(pastedText);
+    if (detections.length === 0) return;
 
-    if (detections.length > 0) {
-        // Prevent the default paste
-        e.preventDefault();
-        e.stopPropagation();
+    
+    // Prevent the default paste
+    e.preventDefault();
+    e.stopPropagation();
 
-        // Store the pending paste data
-        pendingPasteData = pastedText;
-        pendingPasteEvent = e;
+    
+    try{
+      pendingPasteData = pastedText;
+      pendingPasteEvent = e;
 
-        // To increase the counter in rt
-        chrome.runtime.sendMessage({ action: 'incrementCounter' }, (response) => {
-            if (response && response.count) {
-                console.log("PasteShield: Blocked paste #" + response.count + "today");
+      if (typeof chrome !== "undefined" && chrome.runtime.id){
+        chrome.runtime.sendMessage(
+          {action: "incrementCounter"}, (response) => {
+            if (chrome.runtime.lastError) return;
+            if (response?.count !== undefined){
+              console.log(`PasteShield: Blocked paste #${response.count} today`);
             }
-        });
+          }
+        );
+      }
+      // Show the warning modal with detected types and masked preview
+      showWarningModal(detections, pastedText);
+    } catch (err) {
 
-        // Show the warning modal
-        showWarningModal(detections, pastedText);
+      pendingPasteData = null;
+      pendingPasteEvent = null;
+
+      try{
+        const target = e.target;
+
+        if (target?.isContentEditable){
+          document.execCommand('insertText', false, pastedText);
+        } else if(
+          target?.tagName === "INPUT" || target?.tagName === "TEXTAREA"
+        ) {
+          const start = target.selectionStart;
+          const end = target.selectionEnd;
+          const value = target.value;
+
+          target.value = value.substring(0, start) + pastedText + value.substring(end);
+          target.selectionStart = target.selectionEnd = start + pastedText.length;
+
+          target.dispatchEvent(new Event("input", {bubbles: true}));
+        }
+      } catch{
+        // We catch any errors that might occur during the paste execution to prevent the extension from breaking the user experience.
+      }
     }
+    
 }, true);
 
 chrome.storage.local.get(['protectionSettings'], (result) => {
@@ -521,6 +552,6 @@ chrome.storage.local.get(['protectionSettings'], (result) => {
 chrome.storage.onChanged.addListener((changes, area) => {
     if (area === 'local' && changes.protectionSettings) {
         window.pasteShieldSettings = changes.protectionSettings.newValue;
-        console.log('PasteShield: Protection settings updated', window.pasteshieldSettings)
+        console.log('PasteShield: Protection settings updated', window.pasteShieldSettings)
     }
 });

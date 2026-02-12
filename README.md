@@ -26,7 +26,8 @@ So this extension just **pauses the paste**, warns you, and lets *you* decide.
 ```
 PasteShield
 ├── background.js
-├── content.js
+├── content
+│   └── content.js
 ├── icons
 │   ├── icon128.png
 │   ├── icon16.png
@@ -63,24 +64,33 @@ If nothing risky is found, *PasteShield* lets the paste go through normally.
 If something sensitive is detected, it stops the paste and shows a warning.
 
 ## Previews
-![Paste Warning](PasteShield/Previews/03_Warning.png)
-![Popup](PasteShield/Previews/01_popup.png)
-![Trusted Sites](PasteShield/Previews/02_Trusted_sites.png)
-![Normal Paste Initial](PasteShield/Previews/04_Normal_paste.png)
-![Normal Paste After](PasteShield/Previews/05_Normal_paste.png)
+
+<img src="https://github.com/thecybro/PasteShield/blob/main/Previews/01_popup.png" alt="PasteShield Popup">
+
+<img src="https://github.com/thecybro/PasteShield/blob/main/Previews/02_Trusted_sites.png" alt="PasteShield Popup-Trusted sites">
+
+<img src="https://github.com/thecybro/PasteShield/blob/main/Previews/03_Warning.png" alt="PasteShield Warning">
+
+<img src="https://github.com/thecybro/PasteShield/blob/main/Previews/04_Normal_paste.png" alt="PasteShield Normal Paste: before">
+
+<img src="https://github.com/thecybro/PasteShield/blob/main/Previews/05_Normal_paste.png" alt="PasteShield Normal Paste: after">
 
 ## What happens when it warns you
 
 You'll see a small popup with 3 options:
 
-- **Allow once**  
-  Paste it this time only.
-  
-- **Trust site**  
-  Paste it and don’t warn me again on this website.
-  
 - **Cancel**  
+  - **Shortcut:** *Esc* or *C* 
   Don’t paste anything.
+
+- **Trust site**  
+  - **Shortcut:** *Ctrl* or *T*
+  Paste it and don’t warn me again on this website.
+
+- **Allow once**  
+  - **Shortcut:** *Enter* or *A*
+  Paste it this time only.
+
 
 **You can also select options using the shortcut keys shown in the popup.**  
 That’s it.
@@ -100,7 +110,7 @@ After clearing, all sites will warn again.
 
 Will be available on the Chrome Web Store soon.
 
-<!--
+
 ### Manual installation (for now):
 
 1. Download or clone this repository
@@ -108,7 +118,7 @@ Will be available on the Chrome Web Store soon.
 3. Turn on **Developer mode** (top right)
 4. Click **Load unpacked**
 5. Select the `PasteShield` folder
--->
+
 
 ## Privacy
 
