@@ -535,6 +535,7 @@ document.addEventListener('paste', (e) => {
 
     // We have to ensure no modal exists ( faced this problem during testing )
     const existingModal = document.getElementById('pasteshield-modal');
+
     if (existingModal) {
       console.log('PasteShield: Modal already showing, skipping...');
       window.pasteshieldProcessing = false;
@@ -545,24 +546,30 @@ document.addEventListener('paste', (e) => {
     showWarningModal(detections, pastedText);
 
     // We increment counter after modal is shown
-    if (typeof chrome !== "undefined" && chrome.runtime.id) {
-      chrome.runtime.sendMessage(
-        { action: "incrementCounter" }, (response) => {
-          if (chrome.runtime.lastError) {
-            console.log("PasteShield: Some error occured!")
+    if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.id) {
+      try{
+        chrome.runtime.sendMessage(
+          { action: "incrementCounter" }, (response) => {
+            if (chrome.runtime.lastError) {
+              console.log("PasteShield: Some error occured!");
+              return;
+            }
+            if (response?.count !== undefined) {
+              console.log(`PasteShield: Blocked paste #${response.count} today`);
+            }
           }
-          if (response?.count !== undefined) {
-            console.log(`PasteShield: Blocked paste #${response.count} today`);
-          }
-        }
-      );
+        );
+      } catch(err){
+        console.log('PasteShield: Could not increment counter', err);
+      }
     }
+
   } catch (err) {
     console.error('PasteShield: Error showing modal:', err);
     window.pasteshieldProcessing = false; // Reset on error
 
-    pendingPasteData = null;
-    pendingPasteEvent = null;
+    // pendingPasteData = null;
+    // pendingPasteEvent = null;
 
     try {
       const target = e.target;
