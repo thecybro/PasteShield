@@ -6,20 +6,20 @@ let pendingPasteEvent = null;
 
 // We load trusted sites at the start and also listen for any updates to it so that we can immediately trust sites without needing a refresh
 chrome.storage.local.get(['trustedSites'], (result) => {
-    trustedSites = result.trustedSites || [];
+  trustedSites = result.trustedSites || [];
 });
 
 // We need this listener because when user trusts a site from the modal, we update the trusted sites in storage and we want that change to reflect immediately without needing a page refresh
 chrome.storage.onChanged.addListener((changes, area) => {
-    if (area === 'local' && changes.trustedSites) {
-        trustedSites = changes.trustedSites.newValue || [];
-    }
+  if (area === 'local' && changes.trustedSites) {
+    trustedSites = changes.trustedSites.newValue || [];
+  }
 });
 
 // Checking this at the start of the paste event listener to skip detection for trusted sites and allow pasting directly
 function isCurrentSiteTrusted() {
-    const currentDomain = window.location.hostname;
-    return trustedSites.includes(currentDomain);
+  const currentDomain = window.location.hostname;
+  return trustedSites.includes(currentDomain);
 }
 
 // Function which will detect when user pasted something, match it with given regexes and if pasted content matches regex pattern(s), it shows warning with severity color and icon based on detected sensitive data type(s)
@@ -117,7 +117,7 @@ function detectSensitiveData(text) {
   }
 
   function detectCreditCards(input) {
-    const candidates = input.match(/\b(?:\d[ -]*?){13,19}\b/g) ||[];
+    const candidates = input.match(/\b(?:\d[ -]*?){13,19}\b/g) || [];
 
     const cardPatterns = [
       /^4[0-9]{12}(?:[0-9]{3})?$/, //Visa
@@ -157,7 +157,7 @@ function detectSensitiveData(text) {
 
   // Regex pattern  for various phone number formats (with or without country code, spaces, dashes, parentheses) but also ensures that the total number of digits falls within a typical range for phone numbers to reduce false positives.
 
-  function detectPhoneNumbers(input){
+  function detectPhoneNumbers(input) {
     const phonePattern = /^(?:\+\d{1,3}[-. ]?)?\(?\d{3,5}?\)?[-. ]?\d{1,5}[-. ]?\d{1,9}$/;
     const digitsOnly = text.replace(/[\s\-\(\)\+]/g, '');
 
@@ -195,35 +195,35 @@ function detectSensitiveData(text) {
 // For example, API keys and credit card numbers are marked as critical with a red color, while email addresses are marked as low severity with a green color.
 // This visual differentiation helps users prioritize their attention and make informed decisions about how to handle the detected content.
 function getSeverityColor(severity) {
-    const colors = {
-        critical: '#f70202',
-        high: '#ff5722',
-        medium: '#ffae00',
-        low: '#4ae654'
-    };
-    return colors[severity] || colors.medium;
+  const colors = {
+    critical: '#f70202',
+    high: '#ff5722',
+    medium: '#ffae00',
+    low: '#4ae654'
+  };
+  return colors[severity] || colors.medium;
 }
 
 // We hide the detected sensitive content by default incase the user might get in truble if someone accidently saw the sensitve content
 function maskText(text) {
-    if (text.length <= 6) {
-        return '•'.repeat(text.length);
-    }
+  if (text.length <= 6) {
+    return '•'.repeat(text.length);
+  }
 
-    const visibleChars = 3;
-    const start = text.substring(0, visibleChars);
-    const end = text.substring(text.length - visibleChars);
-    const middle = '*'.repeat(Math.min(text.length - (visibleChars * 2), 20));
+  const visibleChars = 3;
+  const start = text.substring(0, visibleChars);
+  const end = text.substring(text.length - visibleChars);
+  const middle = '*'.repeat(Math.min(text.length - (visibleChars * 2), 20));
 
-    return start + middle + end;
+  return start + middle + end;
 }
 
 // Showing only the few initial and last characters of pasted content in the review
 function truncateText(text, maxLength = 150) {
-    if (text.length <= maxLength) {
-        return text;
-    }
-    return text.substring(0, maxLength) + '...';
+  if (text.length <= maxLength) {
+    return text;
+  }
+  return text.substring(0, maxLength) + '...';
 }
 
 // Show user the warning modal with:
@@ -231,35 +231,35 @@ function truncateText(text, maxLength = 150) {
 // - Masked preview of the pasted content with character count
 // - Buttons to allow pasting once, trust the site and cancel the paste (including shortcuts for all these actions)
 function showWarningModal(detections, pasteText) {
-    // Remove any existing modal
-    const existingModal = document.getElementById('pasteshield-modal');
-    if (existingModal) {
-        existingModal.remove();
-    }
+  // Remove any existing modal
+  const existingModal = document.getElementById('pasteshield-modal');
+  if (existingModal) {
+    existingModal.remove();
+  }
 
-    const modal = document.createElement('div');
-    modal.id = 'pasteshield-modal';
-    modal.className = 'pasteshield-overlay';
-    modal.setAttribute('tabindex', '-1');
+  const modal = document.createElement('div');
+  modal.id = 'pasteshield-modal';
+  modal.className = 'pasteshield-overlay';
+  modal.setAttribute('tabindex', '-1');
 
-    // We determine the highest severity among the detected types to set the overall severity of the modal.
-    const highestSeverity = detections.some(d => d.severity === 'critical') ? 'critical' :
-      detections.some(d => d.severity === 'high') ? 'high' :
-            detections.some(d => d.severity === 'medium') ? 'medium' : 'low';
+  // We determine the highest severity among the detected types to set the overall severity of the modal.
+  const highestSeverity = detections.some(d => d.severity === 'critical') ? 'critical' :
+    detections.some(d => d.severity === 'high') ? 'high' :
+      detections.some(d => d.severity === 'medium') ? 'medium' : 'low';
 
-    const detectedList = detections.map(d =>
-        `<li style="color: ${getSeverityColor(d.severity)}">
+  const detectedList = detections.map(d =>
+    `<li style="color: ${getSeverityColor(d.severity)}">
       <span class="pasteshield-detection-icon">${d.icon}</span>
       <span>${d.type}</span>
     </li>`
-    ).join('');
+  ).join('');
 
-    const maskedPreview = maskText(pasteText);
-    const truncatedPreview = truncateText(pasteText);
-    const charCount = pasteText.length;
+  const maskedPreview = maskText(pasteText);
+  const truncatedPreview = truncateText(pasteText);
+  const charCount = pasteText.length;
 
-    // We use template literals inside js to make us easier to inject dynamic content.
-    modal.innerHTML = `
+  // We use template literals inside js to make us easier to inject dynamic content.
+  modal.innerHTML = `
     <div class="pasteshield-modal" data-severity="${highestSeverity}">
       <div class="pasteshield-header">
         <div class="pasteshield-warning-badge">
@@ -328,230 +328,275 @@ function showWarningModal(detections, pasteText) {
         </button>
       </div>
       
-      <div class="pasteshield-footer">
-        <span class="pasteshield-footer-text">💡 Keyboard shortcuts available</span>
+      <div id="watermark-container">
+        <span id="watermark-message">Made by:</span>
+        <span id="watermark">Cybro</span>
       </div>
+
+      <div class="pasteshield-footer">
+      <span class="pasteshield-footer-text">💡 Keyboard shortcuts available</span>
+      </div>
+
     </div>
   `;
 
-    document.body.appendChild(modal);
 
-    // We used requestAnimationFrame for a smooth animation when showing the modal.
-    requestAnimationFrame(() => {
-        modal.classList.add('pasteshield-visible');
-    });
+  document.body.appendChild(modal);
 
-    // We use a slight delay to ensure the keyboard shortcuts work reliably.
+  // We used requestAnimationFrame for a smooth animation when showing the modal.
+  requestAnimationFrame(() => {
+    modal.classList.add('pasteshield-visible');
+  });
+
+  // We use a slight delay to ensure the keyboard shortcuts work reliably.
+  setTimeout(() => {
+    modal.focus();
+    // This allows users to quickly allow the paste using the keyboard shortcut without needing to click on the button.
+    document.getElementById('pasteshield-allow').focus();
+  }, 100);
+
+  // We allow users to toggle the visibility of the pasted content in the preview section
+  let isPreviewVisible = false;
+  const toggleBtn = document.getElementById('pasteshield-toggle-preview');
+  const previewContent = document.getElementById('pasteshield-preview-content');
+
+  toggleBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    isPreviewVisible = !isPreviewVisible;
+
+    if (isPreviewVisible) {
+      previewContent.textContent = truncatedPreview;
+      previewContent.classList.add('pasteshield-preview-revealed');
+      toggleBtn.classList.add('pasteshield-toggle-active');
+    } else {
+      previewContent.textContent = maskedPreview;
+      previewContent.classList.remove('pasteshield-preview-revealed');
+      toggleBtn.classList.remove('pasteshield-toggle-active');
+    }
+  });
+
+  // Keyboard event listener for shortcuts
+  const handleKeyboard = (e) => {
+    const key = e.key.toLowerCase();
+
+    // - Esc or C to cancel
+    if (key === 'escape' || key === 'c') {
+      e.preventDefault();
+      e.stopPropagation();
+      closeModal();
+
+      // - Enter or A to allow once
+    } else if (key === 'enter' || key === 'a') {
+      e.preventDefault();
+      e.stopPropagation();
+      allowOnce();
+
+      // - T to trust site
+    } else if (key === 'control' || key === 't') {
+      e.preventDefault();
+      e.stopPropagation();
+      trustSite();
+    }
+  };
+
+  // We add a closing class to trigger the CSS animation and then remove the modal from the DOM after the animation completes.
+  // This provides a smoother user experience when closing the modal.
+  const closeModal = () => {
+    modal.classList.add('pasteshield-closing');
     setTimeout(() => {
-        modal.focus();
-        // This allows users to quickly allow the paste using the keyboard shortcut without needing to click on the button.
-        document.getElementById('pasteshield-allow').focus();
-    }, 100);
+      modal.removeEventListener('keydown', handleKeyboard);
+      modal.remove();
+      pendingPasteData = null;
+      pendingPasteEvent = null;
+    }, 200);
+  };
 
-    // We allow users to toggle the visibility of the pasted content in the preview section
-    let isPreviewVisible = false;
-    const toggleBtn = document.getElementById('pasteshield-toggle-preview');
-    const previewContent = document.getElementById('pasteshield-preview-content');
+  // Allow once function
+  // We execute the paste immediately without trusting the site, which means if the user tries to paste again, it will trigger the detection and warning modal again. 
+  const allowOnce = () => {
+    modal.classList.add('pasteshield-closing');
+    setTimeout(() => {
+      modal.removeEventListener('keydown', handleKeyboard);
+      modal.remove();
+      executePaste();
+    }, 200);
+  };
 
-    toggleBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        isPreviewVisible = !isPreviewVisible;
-
-        if (isPreviewVisible) {
-            previewContent.textContent = truncatedPreview;
-            previewContent.classList.add('pasteshield-preview-revealed');
-            toggleBtn.classList.add('pasteshield-toggle-active');
-        } else {
-            previewContent.textContent = maskedPreview;
-            previewContent.classList.remove('pasteshield-preview-revealed');
-            toggleBtn.classList.remove('pasteshield-toggle-active');
-        }
+  // To add the current site to trusted sites so that it won't trigger any warnings in future.
+  const trustSite = () => {
+    const currentDomain = window.location.hostname;
+    chrome.storage.local.get(['trustedSites'], (result) => {
+      const sites = result.trustedSites || [];
+      if (!sites.includes(currentDomain)) {
+        sites.push(currentDomain);
+        chrome.storage.local.set({ trustedSites: sites });
+      }
     });
+    modal.classList.add('pasteshield-closing');
+    setTimeout(() => {
+      modal.removeEventListener('keydown', handleKeyboard);
+      modal.remove();
+      executePaste();
+    }, 200);
+  };
 
-    // Keyboard event listener for shortcuts
-    const handleKeyboard = (e) => {
-        const key = e.key.toLowerCase();
-        
-        // - Esc or C to cancel
-        if (key === 'escape' || key === 'c') {
-            e.preventDefault();
-            e.stopPropagation();
-            closeModal();
+  // We attach the keyboard event listener to the modal itself to ensure that it captures the events even if there are other focusable elements on the page. This way, users can use the shortcuts reliably without needing to worry about where the focus is.
+  modal.addEventListener('keydown', handleKeyboard);
 
-        // - Enter or A to allow once
-        } else if (key === 'enter' || key === 'a') {
-            e.preventDefault();
-            e.stopPropagation();
-            allowOnce();
+  // Event listeners for buttons
+  document.getElementById('pasteshield-cancel').addEventListener('click', closeModal);
+  document.getElementById('pasteshield-allow').addEventListener('click', allowOnce);
+  document.getElementById('pasteshield-trust').addEventListener('click', trustSite);
 
-        // - T to trust site
-        } else if (key=== 'control' || key === 't') {
-            e.preventDefault();
-            e.stopPropagation();
-            trustSite();
-        }
-    };
+  const watermark = document.getElementById("watermark");
 
-    // We add a closing class to trigger the CSS animation and then remove the modal from the DOM after the animation completes.
-    // This provides a smoother user experience when closing the modal.
-    const closeModal = () => {
-        modal.classList.add('pasteshield-closing');
-        setTimeout(() => {
-            modal.removeEventListener('keydown', handleKeyboard);
-            modal.remove();
-            pendingPasteData = null;
-            pendingPasteEvent = null;
-        }, 200);
-    };
+  watermark.addEventListener("click", (e) => {
+    e.stopPropagation();
 
-    // Allow once function
-    // We execute the paste immediately without trusting the site, which means if the user tries to paste again, it will trigger the detection and warning modal again. 
-    const allowOnce = () => {
-        modal.classList.add('pasteshield-closing');
-        setTimeout(() => {
-            modal.removeEventListener('keydown', handleKeyboard);
-            modal.remove();
-            executePaste();
-        }, 200);
-    };
+    // Sending user to a location (currently in my github :) )
+    const destination = "https://github.com/thecybro";
 
-    // To add the current site to trusted sites so that it won't trigger any warnings in future.
-    const trustSite = () => {
-        const currentDomain = window.location.hostname;
-        chrome.storage.local.get(['trustedSites'], (result) => {
-            const sites = result.trustedSites || [];
-            if (!sites.includes(currentDomain)) {
-                sites.push(currentDomain);
-                chrome.storage.local.set({ trustedSites: sites });
-            }
-        });
-        modal.classList.add('pasteshield-closing');
-        setTimeout(() => {
-            modal.removeEventListener('keydown', handleKeyboard);
-            modal.remove();
-            executePaste();
-        }, 200);
-    };
+    window.open(destination, "_blank");
+  });
 
-    // We attach the keyboard event listener to the modal itself to ensure that it captures the events even if there are other focusable elements on the page. This way, users can use the shortcuts reliably without needing to worry about where the focus is.
-    modal.addEventListener('keydown', handleKeyboard);
-
-    // Event listeners for buttons
-    document.getElementById('pasteshield-cancel').addEventListener('click', closeModal);
-    document.getElementById('pasteshield-allow').addEventListener('click', allowOnce);
-    document.getElementById('pasteshield-trust').addEventListener('click', trustSite);
-
-    // We allow users to click outside the modal (on the overlay) to close it.
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            closeModal();
-        }
-    });
+  // We allow users to click outside the modal (on the overlay) to close it.
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      closeModal();
+    }
+  });
 }
 
 // For contenteditable (HTML element), we can use document.execCommand to insert text at the cursor position, which ensures that the paste behaves as expected in rich text editors and other contenteditable areas.
-function executePaste() { 
-    if (!pendingPasteData || !pendingPasteEvent) return;
+function executePaste() {
+  if (!pendingPasteData || !pendingPasteEvent) return;
 
-    const target = pendingPasteEvent.target;
+  const target = pendingPasteEvent.target;
 
-    // Handle different input types
-    // We check if the target element is contenteditable or a standard input/textarea and handle the paste accordingly to ensure that the pasted content is inserted correctly in various contexts across different websites.
-    if (target.isContentEditable) {
-        document.execCommand('insertText', false, pendingPasteData);
-    } else if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
-        const start = target.selectionStart;
-        const end = target.selectionEnd;
-        const currentValue = target.value;
+  // Handle different input types
+  // We check if the target element is contenteditable or a standard input/textarea and handle the paste accordingly to ensure that the pasted content is inserted correctly in various contexts across different websites.
+  if (target.isContentEditable) {
+    document.execCommand('insertText', false, pendingPasteData);
+  } else if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
+    const start = target.selectionStart;
+    const end = target.selectionEnd;
+    const currentValue = target.value;
 
-        target.value = currentValue.substring(0, start) + pendingPasteData + currentValue.substring(end);
-        target.selectionStart = target.selectionEnd = start + pendingPasteData.length;
+    target.value = currentValue.substring(0, start) + pendingPasteData + currentValue.substring(end);
+    target.selectionStart = target.selectionEnd = start + pendingPasteData.length;
 
-        // Trigger input event for frameworks that listen to it
-        target.dispatchEvent(new Event('input', { bubbles: true }));
-    }
+    // Trigger input event for frameworks that listen to it
+    target.dispatchEvent(new Event('input', { bubbles: true }));
+  }
 
-    pendingPasteData = null;
-    pendingPasteEvent = null;
+  pendingPasteData = null;
+  pendingPasteEvent = null;
 }
 
 // Main paste event listener
 document.addEventListener('paste', (e) => {
-    // Skip if site is trusted
-    if (isCurrentSiteTrusted()) {
-        return;
+  // here, we prevent multiple rapid fires
+  if (window.pasteshieldProcessing) {
+    console.log('PasteShield: Already processing, ignoring duplicate event');
+    return;
+  }
+  window.pasteshieldProcessing = true;
+
+  setTimeout(() => {
+    window.pasteshieldProcessing = false;
+  }, 500);
+
+  if (isCurrentSiteTrusted()) {
+    window.pasteshieldProcessing = false; // We reset it right after
+    return;
+  }
+
+  const pastedText = e.clipboardData.getData('text');
+
+  // While checking, we ignore empty pastes or very short text
+  if (!pastedText || pastedText.length < 3) {
+    window.pasteshieldProcessing = false; // We reset it right after
+    return;
+  }
+
+  const detections = detectSensitiveData(pastedText);
+  if (detections.length === 0) {
+    window.pasteshieldProcessing = false; // We reset it right after
+    return;
+  }
+
+  // We prevent the default paste
+  e.preventDefault();
+  e.stopPropagation();
+
+  try {
+    pendingPasteData = pastedText;
+    pendingPasteEvent = e;
+
+    // We have to ensure no modal exists ( faced this problem during testing )
+    const existingModal = document.getElementById('pasteshield-modal');
+    if (existingModal) {
+      console.log('PasteShield: Modal already showing, skipping...');
+      window.pasteshieldProcessing = false;
+      return;
     }
 
-    const pastedText = e.clipboardData.getData('text');
+    // Showing the warning modal with detected types and masked preview
+    showWarningModal(detections, pastedText);
 
-    // Ignore empty pastes or very short text
-    if (!pastedText || pastedText.length < 3) {
-        return;
-    }
-
-    const detections = detectSensitiveData(pastedText);
-    if (detections.length === 0) return;
-
-    
-    // Prevent the default paste
-    e.preventDefault();
-    e.stopPropagation();
-
-    
-    try{
-      pendingPasteData = pastedText;
-      pendingPasteEvent = e;
-
-      if (typeof chrome !== "undefined" && chrome.runtime.id){
-        chrome.runtime.sendMessage(
-          {action: "incrementCounter"}, (response) => {
-            if (chrome.runtime.lastError) return;
-            if (response?.count !== undefined){
-              console.log(`PasteShield: Blocked paste #${response.count} today`);
-            }
+    // We increment counter after modal is shown
+    if (typeof chrome !== "undefined" && chrome.runtime.id) {
+      chrome.runtime.sendMessage(
+        { action: "incrementCounter" }, (response) => {
+          if (chrome.runtime.lastError) {
+            console.log("PasteShield: Some error occured!")
           }
-        );
-      }
-      // Show the warning modal with detected types and masked preview
-      showWarningModal(detections, pastedText);
-    } catch (err) {
-
-      pendingPasteData = null;
-      pendingPasteEvent = null;
-
-      try{
-        const target = e.target;
-
-        if (target?.isContentEditable){
-          document.execCommand('insertText', false, pastedText);
-        } else if(
-          target?.tagName === "INPUT" || target?.tagName === "TEXTAREA"
-        ) {
-          const start = target.selectionStart;
-          const end = target.selectionEnd;
-          const value = target.value;
-
-          target.value = value.substring(0, start) + pastedText + value.substring(end);
-          target.selectionStart = target.selectionEnd = start + pastedText.length;
-
-          target.dispatchEvent(new Event("input", {bubbles: true}));
+          if (response?.count !== undefined) {
+            console.log(`PasteShield: Blocked paste #${response.count} today`);
+          }
         }
-      } catch{
-        // We catch any errors that might occur during the paste execution to prevent the extension from breaking the user experience.
-      }
+      );
     }
-    
+  } catch (err) {
+    console.error('PasteShield: Error showing modal:', err);
+    window.pasteshieldProcessing = false; // Reset on error
+
+    pendingPasteData = null;
+    pendingPasteEvent = null;
+
+    try {
+      const target = e.target;
+
+      if (target?.isContentEditable) {
+        document.execCommand('insertText', false, pastedText);
+      } else if (
+        target?.tagName === "INPUT" || target?.tagName === "TEXTAREA"
+      ) {
+        const start = target.selectionStart;
+        const end = target.selectionEnd;
+        const value = target.value;
+
+        target.value = value.substring(0, start) + pastedText + value.substring(end);
+        target.selectionStart = target.selectionEnd = start + pastedText.length;
+
+        target.dispatchEvent(new Event("input", { bubbles: true }));
+      }
+    } catch {
+      // Created this part so that we catch any errors that might occur during the paste execution to prevent the extension from breaking the user experience ( which I faced alot while testing )
+    }
+  }
+
 }, true);
 
 chrome.storage.local.get(['protectionSettings'], (result) => {
-    if (result.protectionSettings) {
-        window.pasteShieldSettings = result.protectionSettings;
-    }
+  if (result.protectionSettings) {
+    window.pasteShieldSettings = result.protectionSettings;
+  }
 });
 
 chrome.storage.onChanged.addListener((changes, area) => {
-    if (area === 'local' && changes.protectionSettings) {
-        window.pasteShieldSettings = changes.protectionSettings.newValue;
-        console.log('PasteShield: Protection settings updated', window.pasteShieldSettings)
-    }
+  if (area === 'local' && changes.protectionSettings) {
+    window.pasteShieldSettings = changes.protectionSettings.newValue;
+    console.log('PasteShield: Protection settings updated', window.pasteShieldSettings)
+  }
 });

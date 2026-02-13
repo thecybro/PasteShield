@@ -75,15 +75,15 @@ If something sensitive is detected, it stops the paste and shows a warning.
 
 <p align="center">
 
-<img src="https://github.com/thecybro/PasteShield/blob/main/Previews/03_Warning.png" alt="PasteShield Warning" width="50%" height="auto">
+<img src="https://github.com/thecybro/PasteShield/blob/main/Previews/03_Warning.png" alt="PasteShield Warning" width="45%" height="auto">
 
 </p>
 
 <p align="center">
 
-<img src="https://github.com/thecybro/PasteShield/blob/main/Previews/04_Normal_paste.png" alt="PasteShield Normal Paste: before" width="50%" height="auto">
+<img src="https://github.com/thecybro/PasteShield/blob/main/Previews/04_Normal_paste.png" alt="PasteShield Normal Paste: before" width="45%" height="auto">
 
-<img src="https://github.com/thecybro/PasteShield/blob/main/Previews/05_Normal_paste.png" alt="PasteShield Normal Paste: after" width="50%" height="auto">
+<img src="https://github.com/thecybro/PasteShield/blob/main/Previews/05_Normal_paste.png" alt="PasteShield Normal Paste: after" width="45%" height="auto">
 
 </p>
 

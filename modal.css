@@ -414,6 +414,53 @@
   transform: translateY(0);
 }
 
+/* Watermark Styling */
+#watermark-container {
+  text-align: center;
+  padding: 12px 28px 8px 28px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+#watermark-message {
+  margin-right: 4px;
+}
+
+#watermark {
+  font-weight: 700;
+  color: #2563eb;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  position: relative;
+}
+
+#watermark:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+#watermark:active {
+  transform: scale(0.95);
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  #watermark-container {
+    background: #1f2937;
+    border-top-color: #374151;
+    color: #9ca3af;
+  }
+
+  #watermark {
+    color: #60a5fa;
+  }
+
+  #watermark:hover {
+    color: #93c5fd;
+  }
+}
+
 .pasteshield-footer {
   padding: 12px 28px 20px 28px;
   text-align: center;
@@ -427,7 +474,7 @@
   font-weight: 500;
 }
 
-/* For dark more */
+/* For dark mode */
 @media (prefers-color-scheme: dark) {
   .pasteshield-modal {
     background: #1f2937;
@@ -535,6 +582,8 @@
     border-color: #6b7280;
   }
   
+   
+
   .pasteshield-footer {
     background: #1f2937;
   }

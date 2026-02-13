@@ -458,6 +458,38 @@ body {
     cursor: not-allowed;
 }
 
+/* Watermark Styling */
+#watermark-container {
+    text-align: center;
+    padding: 12px 28px 8px 28px;
+    font-size: 12px;
+    color: #6b7280;
+
+}
+
+#watermark-message {
+    margin-right: 4px;
+}
+
+#watermark {
+    font-weight: 700;
+    color: #2563eb;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    position: relative;
+}
+
+#watermark:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+#watermark:active {
+    transform: scale(0.95);
+}
+
+
 .footer {
     text-align: center;
     padding-top: 16px;

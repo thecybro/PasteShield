@@ -150,3 +150,12 @@ function setupToggleListeners() {
     });
 }
 
+// Making the watermark clickable to direct user to a destination if they click it
+const watermark = document.getElementById("watermark");
+
+watermark.addEventListener("click", (e) => {
+    // The user will be directed to this location
+    const destination = "https://github.com/thecybro";
+
+    window.open(destination, "_blank");
+});

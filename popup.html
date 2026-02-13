@@ -22,7 +22,7 @@
     <div class="status">
       <div class="status-indicator">
         <div class="status-dot"></div>
-        <span>Protection Active</span>
+        <span>PasteShield Active</span>
       </div>
     </div>
 
@@ -31,14 +31,14 @@
         <div class="stat-icon">🛡️</div>
         <div class="stat-info">
           <div class="stat-number" id="paste-count">0</div>
-          <div class="stat-label">Blocked Today</div>
+          <div class="stat-label">Pastes blocked Today</div>
         </div>
       </div>
     </div>
 
     <div class="settings-section">
       <h2>Protection Settings</h2>
-      <p class="settings-hint">Choose what to protect</p>
+      <p class="settings-hint">Select to protect</p>
 
       <div class="toggle-list">
         <label class="toggle-item">
@@ -98,6 +98,11 @@
         <p class="empty-state">No trusted sites yet</p>
       </div>
       <button id="clear-btn" class="btn btn-danger" disabled>Clear Trusted Sites</button>
+    </div>
+
+    <div id="watermark-container">
+      <span id="watermark-message">Made by:</span>
+      <span id="watermark">Cybro</span>
     </div>
 
     <div class="footer">
