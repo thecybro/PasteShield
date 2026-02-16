@@ -1,14 +1,10 @@
-//  Background service worker for PasteShield
-
 chrome.runtime.onInstalled.addListener((details) => {
     if (details.reason === 'install') {
-        // For initializing storage on first install
         chrome.storage.local.set({
             trustedSites: [],
             pasteCount: 0,
             lastResetDate: new Date().toDateString(),
 
-            // To allow user to select/unselect the content they want to protect.
             protectionSettings: {
                 passwords: true,
                 apiKeys: true,
@@ -47,13 +43,11 @@ chrome.runtime.onInstalled.addListener((details) => {
     }
 });
 
-// To reset counter at midnight 
 function checkAndResetCounter() {
     chrome.storage.local.get(['lastResetDate'], (result) => {
         const today = new Date().toDateString();
 
         if (result.lastResetDate !== today) {
-            // Reset the counter if it's a new day
             chrome.storage.local.set({
                 pasteCount: 0,
                 lastResetDate: today
@@ -65,7 +59,6 @@ function checkAndResetCounter() {
     });
 }
 
-// Checking the date every minute to see if the date has changed aka day has changed
 setInterval(checkAndResetCounter, 60000);
 
 checkAndResetCounter();
@@ -91,7 +84,6 @@ chrome.storage.local.get(['pasteCount'], (result) => {
     updateBadge(result.pasteCount || 0);
 });
 
-// Receive messages from content.js
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'incrementCounter') {
         chrome.storage.local.get(['pasteCount'], (result) => {
@@ -99,7 +91,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             chrome.storage.local.set({ pasteCount: newCount });
             sendResponse({ count: newCount });
         });
-        return true; // Tonkeep listening for messages
+        return true;
     }
 
     if (request.action === 'getTrustedSites') {

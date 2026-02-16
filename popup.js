@@ -1,11 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     loadTrustedSites();
-    loadStats(); // To Load the counter
+    loadStats(); 
 
     loadProtectionSettings();
     setupToggleListeners();
 
-    // Clear button event listener
     document.getElementById('clear-btn').addEventListener('click', clearTrustedSites);
 });
 
@@ -16,7 +15,6 @@ function loadTrustedSites() {
     });
 }
 
-// Function which will load the counter value from background.js & display it in popup.html
 function loadStats() {
     chrome.runtime.sendMessage({ action: 'getStats' }, (response) => {
         if (response) {
@@ -26,13 +24,11 @@ function loadStats() {
     });
 }
 
-// To look out for updates in the counter value and update the badge accordingly in rt
 chrome.storage.onChanged.addListener((changes, area) => {
     if (area === 'local' && changes.pasteCount) {
         const countElement = document.getElementById('paste-count');
         const newCount = changes.pasteCount.newValue || 0;
 
-        // For a little animation while the number changes
         countElement.classList.add('updated');
         countElement.textContent = newCount;
 
@@ -74,7 +70,6 @@ function displayTrustedSites(sites) {
             trustedList.appendChild(siteItem);
         });
 
-        // Event listeners to remove buttons
         document.querySelectorAll('.remove-btn').forEach((btn) => {
             btn.addEventListener('click', (e) => {
                 const siteToRemove = e.currentTarget.getAttribute('data-site');
@@ -103,7 +98,6 @@ function clearTrustedSites() {
     }
 }
 
-// For loading the protection Settings
 function loadProtectionSettings(){
     chrome.storage.local.get(['protectionSettings'], (result) => {
         const settings = result.protectionSettings || {
@@ -123,7 +117,6 @@ function loadProtectionSettings(){
     });
 }
 
-//Now to save all our protection Settings
 function saveProtectionSettings() {
     const settings = {
         passwords: document.getElementById('toggle-passwords').checked,
@@ -150,11 +143,9 @@ function setupToggleListeners() {
     });
 }
 
-// Making the watermark clickable to direct user to a destination if they click it
 const watermark = document.getElementById("watermark");
 
 watermark.addEventListener("click", (e) => {
-    // The user will be directed to this location
     const destination = "https://github.com/thecybro";
 
     window.open(destination, "_blank");
