@@ -14,7 +14,7 @@ body {
 .container {
     width: 100%;
     padding: 15px;
-    background: rgb(214, 211, 211);
+    background: rgb(250, 204, 204);
 }
 
 .header {
@@ -28,7 +28,7 @@ body {
 .logo {
     width: 32px;
     height: 32px;
-    color: #0038b1;
+    color: #0700d3;
 }
 
 .header h1 {
@@ -50,7 +50,13 @@ body {
 }
 
 .status {
-    background: linear-gradient(135deg, #be9c9c 0%, #864e4e 100%);
+    background: linear-gradient(135deg, #dbb9b9 0%, #767676 100%);
+    /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+    /* background: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%); */
+    /* background: linear-gradient(135deg, #232526 0%, #414345 100%); */
+    /* background: linear-gradient(to right, #4facfe 0%, #00f2fe 100%); */
+
+
     padding: 14px 16px;
     border-radius: 10px;
     margin-bottom: 20px;

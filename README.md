@@ -71,7 +71,9 @@ If something sensitive is detected, it stops the paste and shows a warning.
 
 [Warning](https://github.com/thecybro/PasteShield/blob/main/Previews/03_Warning.png)
 
-<!-- [Preview Video]  -->
+[Preview Video](https://youtu.be/3oxqoXqGqxI?si=McVumOR-BSoEEooa) 
+
+**Note:** One update has been added after this preview was recorded, so you might see few things added than what is shown in the video.
 
 ## What happens when it warns you
 

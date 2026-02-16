@@ -226,6 +226,53 @@ function truncateText(text, maxLength = 150) {
   return text.substring(0, maxLength) + '...';
 }
 
+// We give smart suggestions to the user based on what sensitive data was detected
+function getSmartSuggestion(detections) {
+  // Suggestion according to most severe item
+  const types = detections.map(d => d.type);
+
+  if (types.includes('Password')) {
+    return {
+      icon: '💡',
+      text: 'Consider using a password manager for better security.'
+    };
+  }
+
+  if (types.includes('API Key / Token')) {
+    return {
+      icon: '🔐',
+      text: 'Never share API keys publicly. Use environment variables or secret managers instead.'
+    };
+  }
+
+  if (types.includes('Credit Card')) {
+    return {
+      icon: '💳',
+      text: 'Avoid pasting credit card numbers. Type manually for better security.'
+    };
+  }
+
+  if (types.includes('Email Address')) {
+    return {
+      icon: '📧',
+      text: 'Be cautious about sharing your email on public forums to avoid spam.'
+    };
+  }
+
+  if (types.includes('Phone Number')) {
+    return {
+      icon: '📱',
+      text: 'Consider using a secondary phone number for online services.'
+    };
+  }
+
+  // Setup the default sugggestion
+  return {
+    icon: '🛡️',
+    text: 'Always verify you\'re pasting sensitive data into trusted websites.'
+  };
+}
+
 // Show user the warning modal with:
 // - Detected sensitive data type with severity color and icon
 // - Masked preview of the pasted content with character count
@@ -284,28 +331,44 @@ function showWarningModal(detections, pasteText) {
         </div>
         
         <div class="pasteshield-preview-section">
-          <div class="pasteshield-preview-header">
-            <span class="pasteshield-section-label">Preview</span>
-            <span class="pasteshield-char-count">${charCount} characters</span>
-          </div>
-          <div class="pasteshield-preview-wrapper">
-            <div class="pasteshield-preview-box" id="pasteshield-preview-content">
-              ${maskedPreview}
-            </div>
-            <button id="pasteshield-toggle-preview" class="pasteshield-toggle-btn" title="Toggle visibility">
-              <svg class="pasteshield-eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                <circle cx="12" cy="12" r="3"></circle>
-              </svg>
-            </button>
+        <div class="pasteshield-preview-header">
+          <span class="pasteshield-section-label">Preview</span>
+          <button id="pasteshield-toggle-preview" class="pasteshield-show-hide-btn" title="Toggle visibility">
+            <svg class="pasteshield-eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            <span id="pasteshield-toggle-text">Show</span>
+          </button>
+        </div>
+
+        <div class="pasteshield-preview-wrapper">
+          <div class="pasteshield-preview-box" id="pasteshield-preview-content">
+            ${maskedPreview}
           </div>
         </div>
+        
+        <div class="pasteshield-preview-footer">
+          <span class="pasteshield-char-count">${charCount} characters</span>
+          <button id="pasteshield-copy-masked" class="pasteshield-copy-btn" title="Copy masked version">
+            <svg class="pasteshield-copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span>Copy Masked</span>
+          </button>
+        </div>
+      </div>
         
         <div class="pasteshield-site-info">
           <span class="pasteshield-site-label">Pasting to:</span>
           <span class="pasteshield-site-name">${window.location.hostname}</span>
         </div>
-      </div>
+
+        <div class="pasteshield-suggestion">
+          <span class="pasteshield-suggestion-icon">${getSmartSuggestion(detections).icon}</span>
+          <span class="pasteshield-suggestion-text">${getSmartSuggestion(detections).text}</span>
+        </div>
       
       <div class="pasteshield-actions">
         <button id="pasteshield-cancel" class="pasteshield-btn pasteshield-btn-secondary">
@@ -317,7 +380,7 @@ function showWarningModal(detections, pasteText) {
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
           </svg>
           <span>Trust Site</span>
-          <span class="pasteshield-shortcut">Ctrl or<br>T</span>
+          <span class="pasteshield-shortcut">T</span>
         </button>
         <button id="pasteshield-allow" class="pasteshield-btn pasteshield-btn-primary">
           <svg class="pasteshield-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -357,9 +420,11 @@ function showWarningModal(detections, pasteText) {
 
   // We allow users to toggle the visibility of the pasted content in the preview section
   let isPreviewVisible = false;
+  const toggleText = document.getElementById('pasteshield-toggle-preview')
   const toggleBtn = document.getElementById('pasteshield-toggle-preview');
   const previewContent = document.getElementById('pasteshield-preview-content');
 
+  if (toggleBtn && previewContent && toggleText){
   toggleBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     isPreviewVisible = !isPreviewVisible;
@@ -368,11 +433,58 @@ function showWarningModal(detections, pasteText) {
       previewContent.textContent = truncatedPreview;
       previewContent.classList.add('pasteshield-preview-revealed');
       toggleBtn.classList.add('pasteshield-toggle-active');
+      toggleText.textContent = 'Hide';
     } else {
       previewContent.textContent = maskedPreview;
       previewContent.classList.remove('pasteshield-preview-revealed');
       toggleBtn.classList.remove('pasteshield-toggle-active');
+      toggleText.textContent = "Show";
     }
+  });
+}
+
+  // The masked version will be copied to clipboard
+  const copyMaskedBtn = document.getElementById('pasteshield-copy-masked');
+  let copyTooltip = null;
+
+  copyMaskedBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+
+    // The masked text will be copied to clipboard
+    navigator.clipboard.writeText(maskedPreview).then(() => {
+      // Success popup tooltip will be shown to user
+      if (!copyTooltip) {
+        copyTooltip = document.createElement('div');
+        copyTooltip.className = 'pasteshield-copy-tooltip';
+        copyTooltip.textContent = 'Copied!';
+        copyMaskedBtn.appendChild(copyTooltip);
+      }
+
+      copyTooltip.classList.add('pasteshield-tooltip-show');
+      copyMaskedBtn.classList.add('pasteshield-copy-success');
+
+      setTimeout(() => {
+        copyTooltip.classList.remove('pasteshield-tooltip-show');
+        copyMaskedBtn.classList.remove('pasteshield-copy-success');
+      }, 2000); // 2 seconds
+
+      }).catch(err => {
+      console.error('PasteShield: Failed to copy', err);
+
+      // Error popup tooltip will be shown to user
+      if (!copyTooltip) {
+        copyTooltip = document.createElement('div');
+        copyTooltip.className = 'pasteshield-copy-tooltip';
+        copyMaskedBtn.appendChild(copyTooltip);
+      }
+
+      copyTooltip.textContent = 'Failed!';
+      copyTooltip.classList.add('pasteshield-tooltip-show');
+
+      setTimeout(() => {
+        copyTooltip.classList.remove('pasteshield-tooltip-show');
+      }, 2000);
+    });
   });
 
   // Keyboard event listener for shortcuts
@@ -392,7 +504,7 @@ function showWarningModal(detections, pasteText) {
       allowOnce();
 
       // - T to trust site
-    } else if (key === 'control' || key === 't') {
+    } else if (key === 't') {
       e.preventDefault();
       e.stopPropagation();
       trustSite();
